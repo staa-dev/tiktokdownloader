@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>STAA TikTok Downloader</title>
+<style>
+body{
+    background:#0f0f0f;
+    color:#fff;
+    font-family:sans-serif;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.container{
+    width:400px;
+    padding:30px;
+    border-radius:20px;
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(20px);
+    text-align:center;
+}
+
+input{
+    width:100%;
+    padding:12px;
+    border-radius:10px;
+    border:none;
+    margin-bottom:20px;
+}
+
+button{
+    padding:12px 20px;
+    border:none;
+    border-radius:30px;
+    background:#7b3cff;
+    color:#fff;
+    cursor:pointer;
+}
+
+a{
+    display:block;
+    margin-top:20px;
+    color:#00eaff;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h2>TikTok Downloader</h2>
+    <input type="text" id="url" placeholder="Paste TikTok URL here">
+    <button onclick="download()">Download</button>
+    <div id="result"></div>
+</div>
+
+<script>
+async function download(){
+    const url = document.getElementById("url").value;
+
+    const res = await fetch("http://localhost:3000/api/tiktok", {
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body: JSON.stringify({url})
+    });
+
+    const data = await res.json();
+
+    if(data.video){
+        document.getElementById("result").innerHTML =
+            `<a href="${data.video}" target="_blank">Download Video</a>`;
+    } else {
+        document.getElementById("result").innerHTML = "Failed to download.";
+    }
+}
+</script>
+
+</body>
+</html>
